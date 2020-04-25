@@ -1,8 +1,9 @@
 import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import xlsxwriter
-
 import sqlite3
+
+#Function which converts image data into BinaryData
 
 def convertToBinaryData(filename):
     #Convert digital data to binary format
@@ -10,19 +11,20 @@ def convertToBinaryData(filename):
         blobData = file.read()
     return blobData
 
-def insertBLOB(name,photo,pt):#, resumeFile,empId, name):
+#Function which gives the INSERT instruction to Database
+def insertBLOB(name,photo,pt):
     try:
         empPhoto = convertToBinaryData(photo)
         print("Connected to SQLite")
-        cursor.execute(''' INSERT INTO new_employee (name,photo,pt) VALUES ( ? , ? , ? )''',(name,empPhoto,pt,))#, ?, ?, ?)id, name, , resume)
+        cursor.execute(''' INSERT INTO new_employee (name,photo,pt) VALUES ( ? , ? , ? )''',(name,empPhoto,pt,))
         sqliteConnection.commit()
         print("Image inserted successfully as a BLOB into a table")
 
     except sqlite3.Error as error:
         print("Failed to insert blob data into sqlite table", error)
 
+#Function which downloads the pictures of the personalities to directore /image
 def u_to_j(url,file_path,filename):
-	# filename='image-{}.jpg'.format(i)
 	filename = "{}.jpg".format(filename)
 	full_path = '{}{}'.format(file_path,filename)
 	urllib.request.urlretrieve(url,full_path)
@@ -43,7 +45,9 @@ Sagittarius = 'open to new things, understanding, generous, philosophical, optim
 Capricorn = 'withstands difficulties, trustworthy, patient, determined'
 Aquarius = 'humane, visionary, progressive, objective, rational and scientific, good at socializing'
 Pisces = ' sensitive, compassionate, strong imagination, artistic inspiration, creative'
-FILE_PATH='images/'
+
+FILE_PATH='images/'#change this if you've named images folder as anything else
+
 def zodiac_sign(day, month):
 	day = int(day)
 	month = int(month)
@@ -75,10 +79,10 @@ def zodiac_sign(day, month):
 	return astro_sign
 
 url = 'https://en.wikipedia.org/wiki/List_of_Indian_film_actors'
-un= (r"D:\Mallik\Progs\images\unavailable.jpg")
+un= (r"D:\Mallik\Progs\images\unavailable.jpg")#This binds the unavailable picture to the program, change this before running the code 
 row = 0
 column = 0
-workbook = xlsxwriter.Workbook("celebrities.xlsx")
+workbook = xlsxwriter.Workbook("celebrities.xlsx")#excel file name where the output is stored it is created
 worksheet = workbook.add_worksheet("first sheet")
 exist = workbook.get_worksheet_by_name("first sheet")
 html = urllib.request.urlopen(url).read()
@@ -91,11 +95,12 @@ column = column+5
 exist.write(row,column,"PERSONALITY TRAITS")
 row = 1
 column=0
-sqliteConnection = sqlite3.connect('celebrities_database.db')
+sqliteConnection = sqlite3.connect('celebrities_database.db')#Database creation
 cursor = sqliteConnection.cursor()
 cursor.executescript('''DROP TABLE IF EXISTS new_employee;
 	CREATE TABLE new_employee (name TEXT NOT NULL, photo BLOB,pt TEXT);''')
 
+#Actors extraction
 u = []
 for i in range(1,24):
 	u.append(tags[i])
@@ -126,6 +131,7 @@ for splittest in title_names_actor:
 				igm = im.find('img')
 				al = igm.get('src',None)
 				u_to_j("https:"+al,FILE_PATH,test)
+				#Images access path, change it according to your system
 				img_path = "D:\Mallik\Progs\images\\"+test+".jpg"
 				exist.write(row,column,al)
 				column = column+4
@@ -173,7 +179,7 @@ for splittest in title_names_actor:
 				continue
 print("written actors successfully..")
 
-# row = row+1
+#Actresses Extraction
 column = 0
 url2 = 'https://en.wikipedia.org/wiki/List_of_Indian_film_actresses'
 html2 = urllib.request.urlopen(url2).read()
@@ -210,6 +216,7 @@ for replacetest in title_names_actress:
 				la = gmi.get('src',None)
 				exist.write(row,column,la)
 				u_to_j("https:"+la,FILE_PATH,acctest)
+				#Images access path, change it according to your system
 				imga_path = "D:\Mallik\Progs\images\\"+acctest+".jpg"
 				column = column+4
 				exist.write(row,column,"  ")
