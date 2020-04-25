@@ -19,3 +19,5 @@ URL of the person is used to download the image in .jpg format and store in /ima
 As all the Actors/Actresses photos are not available in Wikipedia Database, unavailable.jpg is attached to the folder, using that the program stores the name and personality traits in the database even if the photo is unavailable. 
 
 Personality Traits are determined by their respective DOB and Zodiac Signs.
+
+Refer the output screenshots folder to look at how the final database and image folder looks like.
