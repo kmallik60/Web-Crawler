@@ -1,6 +1,14 @@
 # Web-Crawler
 This web crawler, gets names, images and personality traits of persons from Wikipedia and stores them in Excel and SQL Database
 
+As GitHub as a limit on file size (25MB), I've uploaded the final database of the project in Google Drive as the size of the database is above 25MB couldn't upload it here. 
+
+DATABASE LINK - https://drive.google.com/file/d/1bNN3BSBjiQBELT4GN4vpXRx4K1jPfHXQ/view?usp=sharing
+
+Download the .db file and access it with SQLlite.
+
+Link to download SQLLite - https://nightlies.sqlitebrowser.org/latest/
+
 The uploaded files are the final output from the python file. To run this on your system, create a directory named 'images' and run the .py file from the parent directory.
 
 File unavailable.jpg must be stored in images folder.
